@@ -39,4 +39,28 @@ $ kubectl get svc -n istio-system
 
 Check whether it works properly
 
-$ curl <ELB.aws.com>/hello
+$ curl <ELB.aws.com>/hell
+
+-----
+
+Adding the pod of helloworld-v2 with envoy proxy
+$ kubectl apply -f <(istioctl kube-inject -f helloworld-v2.yaml)
+
+Overwrite new rule in gateway
+$ kubectl apply -f helloworld-v2-routing.yaml
+
+Get the full address of ELB
+
+$ kubectl get svc -n istio-system -o wide
+
+This request is no longer worked
+$ curl <ELB.aws.com>/hello -v
+
+Check the new rule applied
+$ kubectl get virtualservice
+
+test the routing rule
+$ curl <ELB.aws.com> -H "host: hello.example.com"
+
+get the access to v2
+$ curl <ELB.awscom> -H "host: hello.example.com" -H "end-user: john"
