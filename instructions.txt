@@ -75,3 +75,18 @@ $ kubectl describe virtualservice helloworld
 
 To see getting approximately nine times v1 and 1 time v2
 $ for ((i=1;i<=10;i++)); do curl <ELB.aws.com> -H "Host: hello.example.com" ; done
+
+----
+IMPLEMENT RETRYING POD
+
+$ kubectl apply -f helloworld-v3.yaml
+
+Get the information about destinations rule
+$ kubectl describe destinationrule hello
+
+Access the v3 app
+$ curl <ELB.aws.com> -H "Host: hello-v3.example.com"
+
+Check result
+$ for ((i=1;i<=10;i++)); do time curl <ELB.aws.com> -H "Host: hello-v3.example.com" ; done
+
