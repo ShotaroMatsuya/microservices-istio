@@ -90,3 +90,23 @@ $ curl <ELB.aws.com> -H "Host: hello-v3.example.com"
 Check result
 $ for ((i=1;i<=10;i++)); do time curl <ELB.aws.com> -H "Host: hello-v3.example.com" ; done
 
+----
+MUTUAL TLS
+Delete older demo, otherwise conflict with new one
+$ kubectl delete pods --all --force
+$ istioctl manifest generate --set profile=demo | kubectl delete --ignore-not-found=true -f -
+$ kubectl delete namespace istio-system
+$ kubectl label namespace default istio-injection-
+
+apply tls-demo manifest with envoy
+$ kubectl apply -f <(istioctl kube-inject -f helloworld-tls.yaml)
+apply legacy-demo manifest
+$ kubectl apply -f helloworld-tls-legacy.yaml
+Check the elb service
+$ kubectl get svc -n istio-system -o wide
+
+test 2type application with curl
+$ curl <elb.aws.com> -H "Host: hello-tls.example.com"
+$ curl <elb.aws.com> -H "Host: hello-tls-reverse.example.com"
+
+enabled mtls
