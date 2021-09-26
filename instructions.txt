@@ -23,4 +23,20 @@ Add a namespace label to instruct istio to automatically inject Envoy sidecar pr
 
 $ kubectl label namespace default istio-injection=enabled
 
+-----
 
+DEPLOY hello world app with envoy proxy
+
+$ kubectl apply -f <(istioctl kube-inject -f helloworld.yaml)
+
+Apply gateway to access to the hello-app
+
+$ kubectl apply -f helloworld-gw.yaml
+
+Get the full address of loadbalancer
+
+$ kubectl get svc -n istio-system
+
+Check whether it works properly
+
+$ curl <ELB.aws.com>/hello
