@@ -1,0 +1,26 @@
+DOWNLOAD ON CLIENT
+
+$ curl -L https://istio.io/downloadIstio | sh -
+
+Move to the package dir
+
+$ cd istio-1.11.3
+
+Add the istioctl client to my path
+
+$ export PATH=$PWD/bin:$PATH
+
+INSTALL ISTIO
+
+$ istioctl install --set profile=demo -y
+✔ Istio core installed
+✔ Istiod installed
+✔ Egress gateways installed
+✔ Ingress gateways installed
+✔ Installation complete
+
+Add a namespace label to instruct istio to automatically inject Envoy sidecar proxies when you deploy your application later
+
+$ kubectl label namespace default istio-injection=enabled
+
+
