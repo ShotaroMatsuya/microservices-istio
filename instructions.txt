@@ -132,3 +132,4 @@ check whether we have access to the outside of the world
 apply Service Entry object
 
 $ kubectl apply -f external-service.yaml
+
