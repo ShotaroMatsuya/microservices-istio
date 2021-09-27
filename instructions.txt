@@ -109,4 +109,26 @@ test 2type application with curl
 $ curl <elb.aws.com> -H "Host: hello-tls.example.com"
 $ curl <elb.aws.com> -H "Host: hello-tls-reverse.example.com"
 
-enabled mtls
+-----
+Estio Egress traffic
+
+apply pods
+
+$ kubectl apply -f <(istioctl kube-inject -f helloworld.yaml)
+
+login hello pod
+$ kubectl exec -it hello-xxxxxxx -- sh
+
+access to world2 pod and output contents
+# wget world-2:8080
+# cat index.html
+# rm index.html
+
+check whether we have access to the outside of the world
+
+# wget ifconfig.co
+# wget www.google.com
+
+apply Service Entry object
+
+$ kubectl apply -f external-service.yaml
